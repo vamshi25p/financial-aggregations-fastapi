@@ -1,0 +1,24 @@
+*{
+  font-family: "Roboto",serif;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px; 
+  margin-top: 20px;
+}
+
+.button-container button {
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+
+.button-container button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
