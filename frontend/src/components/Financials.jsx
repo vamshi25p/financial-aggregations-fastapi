@@ -2,16 +2,37 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAggregations } from "../redux/dataSlice"; // Adjust the import path if needed
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Typography, Paper, CircularProgress, Alert } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  CircularProgress,
+  Alert,
+  Paper,
+  Table,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
 import BarChart from "./BarChart";
+import { logout } from "../redux/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Financials = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { aggregations, loading, error } = useSelector((state) => state.data);
 
   useEffect(() => {
     dispatch(fetchAggregations());
   }, [dispatch]);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   const columns = [
     { field: "country_code", headerName: "Country Code", flex: 1 },
@@ -37,8 +58,18 @@ const Financials = () => {
         height: "100vh",
         gap: 2,
         p: 3,
+        position: "relative",
       }}
     >
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleLogout}
+        sx={{ position: "absolute", top: 10, right: 20 }}
+      >
+        Logout
+      </Button>
+
       <Typography variant="h4" color="primary" textAlign="center">
         Company Aggregations
       </Typography>
@@ -48,12 +79,27 @@ const Financials = () => {
       ) : error ? (
         <Alert severity="error">{error}</Alert>
       ) : (
-        <Paper sx={{ width: "80%", height: 400, p: 2 }}>
-          <DataGrid
-            rows={aggregations.map((item, index) => ({ id: index, ...item }))}
-            columns={columns}
-            pageSize={5}
-          />
+        <Paper sx={{ width: "80%", p: 2 }}>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {columns.map((col) => (
+                    <TableCell key={col.field}>{col.headerName}</TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {aggregations.map((item, index) => (
+                  <TableRow key={index}>
+                    {columns.map((col) => (
+                      <TableCell key={col.field}>{item[col.field]}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Paper>
       )}
 

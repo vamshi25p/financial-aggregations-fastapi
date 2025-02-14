@@ -1,30 +1,40 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../redux/authSlice";
+import { registerUser } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import {
+  Box,
   TextField,
   Button,
-  CircularProgress,
   Typography,
+  CircularProgress,
+  Alert,
   Paper,
-  Box,
   Stack,
 } from "@mui/material";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, token } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
-  const handleSubmit = async (e) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await dispatch(loginUser({ email, password }))
-      .unwrap()
-      .then(() => navigate("/financials"))
-      .catch(() => {}); // Handle errors inside the component if needed
+    dispatch(registerUser(formData)).then((action) => {
+      if (action.meta.requestStatus === "fulfilled") {
+        navigate("/login");
+      }
+    });
   };
 
   return (
@@ -39,37 +49,42 @@ const Login = () => {
         sx={{ padding: 4, width: "400px", textAlign: "center" }}
       >
         <Typography variant="h5" gutterBottom>
-          Login
+          Register
         </Typography>
-        {token && (
-          <Typography color="success.main">Login Successful!</Typography>
-        )}
         <form onSubmit={handleSubmit}>
           <TextField
+            label="Name"
+            name="name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <TextField
             label="Email"
+            name="email"
             type="email"
             variant="outlined"
             fullWidth
             margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
             required
           />
           <TextField
             label="Password"
+            name="password"
             type="password"
             variant="outlined"
             fullWidth
             margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
             required
           />
-          {error && (
-            <Typography color="error.main" variant="body2">
-              {error}
-            </Typography>
-          )}
+          {error && <Alert severity="error">{error}</Alert>}
           <Stack spacing={2} mt={2}>
             <Button
               type="submit"
@@ -78,16 +93,16 @@ const Login = () => {
               fullWidth
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : "Login"}
+              {loading ? <CircularProgress size={24} /> : "Register"}
             </Button>
-            <Typography variant="body2">Don&apos;t have an account?</Typography>
+            <Typography variant="body2">Already have an account?</Typography>
             <Button
               variant="outlined"
               color="secondary"
               fullWidth
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/login")}
             >
-              Register
+              Back to Login
             </Button>
           </Stack>
         </form>
@@ -96,4 +111,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
