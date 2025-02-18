@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAggregations } from "../redux/dataSlice"; // Adjust the import path if needed
-import { DataGrid } from "@mui/x-data-grid";
 import {
   Box,
   Button,

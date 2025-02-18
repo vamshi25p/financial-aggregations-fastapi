@@ -13,12 +13,12 @@ export const loginUser = createAsyncThunk(
                 throw new Error("Invalid Credentials");
             }
             const data = await response.json();
-            console.log("API Response:", data); // ✅ Debugging API Response
+            console.log("API Response:", data); 
 
-            // Fix: Save correct key "access_token"
+            
             localStorage.setItem("token", data.access_token);
 
-            return { token: data.access_token, user: {} }; // Fix structure
+            return { token: data.access_token, user: {} };
         } catch (error) {
             return rejectWithValue(error.message);
         }

@@ -24,7 +24,7 @@ const Login = () => {
     await dispatch(loginUser({ email, password }))
       .unwrap()
       .then(() => navigate("/financials"))
-      .catch(() => {}); // Handle errors inside the component if needed
+      .catch(() => {});
   };
 
   return (
