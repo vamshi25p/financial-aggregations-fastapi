@@ -1,0 +1,20 @@
+Do the following end to end scenario and demo it using -  React, redux, reduxToolkit, Python Fast API, Polars. Postgress sql
+ 
+Build a React Application - 
+ User can register or create a new account with username and password. Implement Basic Form page
+Should save it via FastAPI, and create record in PostgressSql table
+User can able to login using the given credentials, if anything is wrong throw invalid credentials error. 
+After successful authentication, Backend should create and send jwt token to front end. 
+store the JWT token in Browser storage
+after successful authentication user can land on Dashboard page. 
+in Dashboard page call the back-end api to get companies data
+API should have JWT token in headers and validate the authentication, if it is not valid throw 401 error 
+if valid, process the companies csv data using existing python logic and Polars, create aggregations, send it to Front-end response. 
+in Front end read the response store it in Redux 
+In Dashboard component read the data from redux store display in charts and tables whatever the usecase. 
+Add. Try to use MUI Components, Styled Components Redux and Redux tool kit. 
+
+Code Flow should be 
+Component ----> Action Dispatcher ---> Redux Toolkit middlewear ----> Action API Call ---->           Api to Python Code 
+                                                                                                            |
+Display Data <- Componenet Updatge with Data <-  Redux State Update <-- Async Action Completion <-- API Response
