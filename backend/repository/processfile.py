@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-data_dir = os.path.join(project_root, 'backend', 'data')  # Adjust if needed
+data_dir = os.path.join(project_root, 'backend', 'data')  
 file_path = os.path.join(data_dir, '20K Financial Data.csv')
 
 def load_data():

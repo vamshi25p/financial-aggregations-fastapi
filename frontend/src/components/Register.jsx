@@ -30,11 +30,13 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(formData)).then((action) => {
-      if (action.meta.requestStatus === "fulfilled") {
-        navigate("/login");
-      }
-    });
+    dispatch(registerUser(formData))
+      .then((action) => {
+        if (action.meta.requestStatus === "fulfilled") {
+          navigate("/login");
+        }
+      })
+      .catch((error) => console.error("Login failed:", error));
   };
 
   return (

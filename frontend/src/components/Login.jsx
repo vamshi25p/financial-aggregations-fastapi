@@ -22,9 +22,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await dispatch(loginUser({ email, password }))
-      .unwrap()
-      .then(() => navigate("/financials"))
-      .catch(() => {});
+      .then((action) => {
+        if (action.meta.requestStatus === "fulfilled") {
+          navigate("/financials");
+        }
+      })
+      .catch((error) => console.error("Login failed:", error));
   };
 
   return (
